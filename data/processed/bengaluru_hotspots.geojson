@@ -1,0 +1,203 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6238,
+          12.9175
+        ]
+      },
+      "properties": {
+        "name": "Silk Board Underpass & Junction",
+        "ward": "BTM Layout / HSR",
+        "vulnerability": "Severe",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6834,
+          12.926
+        ]
+      },
+      "properties": {
+        "name": "Ecospace / Bellandur ORR",
+        "ward": "Bellandur (Ward 150)",
+        "vulnerability": "Critical",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.597,
+          13.0358
+        ]
+      },
+      "properties": {
+        "name": "Hebbal Flyover Service Road",
+        "ward": "Hebbal (Ward 21)",
+        "vulnerability": "Severe",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6269,
+          12.9345
+        ]
+      },
+      "properties": {
+        "name": "Koramangala 4th Block (KHB)",
+        "ward": "Koramangala (Ward 151)",
+        "vulnerability": "High",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6206,
+          13.0458
+        ]
+      },
+      "properties": {
+        "name": "Manyata Tech Park / Nagawara",
+        "ward": "Nagawara (Ward 23)",
+        "vulnerability": "High",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6322,
+          12.9363
+        ]
+      },
+      "properties": {
+        "name": "Sony World Signal 80ft Road",
+        "ward": "Koramangala",
+        "vulnerability": "Moderate",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6698,
+          13.0006
+        ]
+      },
+      "properties": {
+        "name": "Tin Factory / KR Puram",
+        "ward": "KR Puram (Ward 52)",
+        "vulnerability": "Severe",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5997,
+          12.8988
+        ]
+      },
+      "properties": {
+        "name": "Bilekahalli Junction (Bannerghatta Rd)",
+        "ward": "Bilekahalli (Ward 188)",
+        "vulnerability": "Moderate",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5714,
+          12.9772
+        ]
+      },
+      "properties": {
+        "name": "Anand Rao Circle Underpass",
+        "ward": "Gandhinagar (Ward 94)",
+        "vulnerability": "Severe",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6446,
+          12.9121
+        ]
+      },
+      "properties": {
+        "name": "HSR Layout Sector 6 Ring Road",
+        "ward": "HSR Layout (Ward 174)",
+        "vulnerability": "High",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6974,
+          12.9904
+        ]
+      },
+      "properties": {
+        "name": "Mahadevapura Outer Ring Road",
+        "ward": "Mahadevapura (Ward 82)",
+        "vulnerability": "High",
+        "category": "chronic_flood_hotspot"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.7297,
+          12.9431
+        ]
+      },
+      "properties": {
+        "name": "Varthur Kodi Junction",
+        "ward": "Varthur (Ward 149)",
+        "vulnerability": "Severe",
+        "category": "chronic_flood_hotspot"
+      }
+    }
+  ]
+}

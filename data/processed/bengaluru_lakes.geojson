@@ -1,0 +1,103 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.668,
+          12.9352
+        ]
+      },
+      "properties": {
+        "name": "Bellandur Lake",
+        "category": "waterbody_lake"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.7188,
+          12.9422
+        ]
+      },
+      "properties": {
+        "name": "Varthur Lake",
+        "category": "waterbody_lake"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6204,
+          12.9829
+        ]
+      },
+      "properties": {
+        "name": "Ulsoor Lake",
+        "category": "waterbody_lake"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5912,
+          13.0402
+        ]
+      },
+      "properties": {
+        "name": "Hebbal Lake",
+        "category": "waterbody_lake"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5739,
+          13.0102
+        ]
+      },
+      "properties": {
+        "name": "Sankey Tank",
+        "category": "waterbody_lake"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6186,
+          12.909
+        ]
+      },
+      "properties": {
+        "name": "Madiwala Lake",
+        "category": "waterbody_lake"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6433,
+          12.9219
+        ]
+      },
+      "properties": {
+        "name": "Agara Lake",
+        "category": "waterbody_lake"
+      }
+    }
+  ]
+}

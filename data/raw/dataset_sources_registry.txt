@@ -1,0 +1,24 @@
+NAMMAFLOOD SENTINEL — DATASET REGISTRY & LICENSES
+============================================================
+
+Dataset: FloodNet-Supervised
+Description: High-resolution post-flood imagery for water inundation semantic segmentation and classification.
+URL: https://github.com/BinaLab/FloodNet-Supervised_v1.0
+License: CC BY-NC-SA 4.0
+Status: documented_and_integrated
+----------------------------------------
+
+Dataset: OpenCity Bengaluru Stormwater & Waterlogging Registry
+Description: BBMP chronic waterlogging points and stormwater drain network.
+URL: https://opencity.in
+License: ODC-BY
+Status: processed_into_geojson
+----------------------------------------
+
+Dataset: Open-Meteo High-Resolution Precipitation
+Description: Live hourly rainfall observations and 24h forecast grids for Bengaluru coordinates.
+URL: https://api.open-meteo.com/v1/forecast
+License: CC BY 4.0
+Status: integrated_in_weather_agent
+----------------------------------------
+

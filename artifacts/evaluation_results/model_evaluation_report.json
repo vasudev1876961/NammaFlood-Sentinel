@@ -1,0 +1,40 @@
+{
+  "evaluation_samples": 500,
+  "classes": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "precision_by_class": {
+    "low": 1.0,
+    "medium": 1.0,
+    "high": 1.0
+  },
+  "recall_by_class": {
+    "low": 1.0,
+    "medium": 1.0,
+    "high": 1.0
+  },
+  "f1_by_class": {
+    "low": 1.0,
+    "medium": 1.0,
+    "high": 1.0
+  },
+  "confusion_matrix": [
+    [
+      212,
+      0,
+      0
+    ],
+    [
+      0,
+      167,
+      0
+    ],
+    [
+      0,
+      0,
+      121
+    ]
+  ]
+}

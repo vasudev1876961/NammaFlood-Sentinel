@@ -1,0 +1,18 @@
+{
+  "random_forest_macro_f1": 1.0,
+  "xgboost_macro_f1": 0.9946,
+  "feature_importances": {
+    "vision_score": 0.1282,
+    "water_coverage": 0.237,
+    "rainfall_1h": 0.2427,
+    "rainfall_3h": 0.3138,
+    "hotspot_distance_m": 0.0282,
+    "corroboration_count": 0.048,
+    "in_500m_hotspot": 0.002
+  },
+  "classes": [
+    "high",
+    "low",
+    "medium"
+  ]
+}

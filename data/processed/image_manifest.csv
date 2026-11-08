@@ -1,0 +1,6 @@
+image_path,filename,label,width,height,format
+C:\Users\vasud\OneDrive\Desktop\IBM-BARATHON\data\sample\flood\1.jpg,1.jpg,flood,1920,2560,JPEG
+C:\Users\vasud\OneDrive\Desktop\IBM-BARATHON\data\sample\flood\2.jpg,2.jpg,flood,1920,2560,JPEG
+C:\Users\vasud\OneDrive\Desktop\IBM-BARATHON\data\sample\flood\3.jpg,3.jpg,flood,1920,2560,JPEG
+C:\Users\vasud\OneDrive\Desktop\IBM-BARATHON\data\sample\non_flood\dry_street_1.jpg,dry_street_1.jpg,flood,640,480,JPEG
+C:\Users\vasud\OneDrive\Desktop\IBM-BARATHON\data\sample\non_flood\dry_street_2.jpg,dry_street_2.jpg,flood,640,480,JPEG
