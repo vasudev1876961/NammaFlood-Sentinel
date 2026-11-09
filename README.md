@@ -7,6 +7,20 @@
 
 ---
 
+## 🏆 IBM Bobathon Submission Deliverables Index
+
+In accordance with the official submission requirements:
+
+| Deliverable | Location / Resource Link | Description |
+| :--- | :--- | :--- |
+| **1. Problem Statement & Detailed Solution Description** | [`docs/SUBMISSION_DOCUMENT.md`](docs/SUBMISSION_DOCUMENT.md) | Exhaustive 9-section document detailing Bengaluru urban hydrology, 6 AI agents, LangGraph DAG, ML validation, and civic impact roadmap. |
+| **2. Working Prototype Built with IBM Bob** | [`backend/`](backend/) & [`frontend/`](frontend/) <br> Log: [`docs/bob_development_log.md`](docs/bob_development_log.md) | Full-stack production prototype (FastAPI + LangGraph + React + Tailwind + Leaflet) with verified IBM Bob co-development audit trail. |
+| **3. Source Code Repository** | [vasudev1876961/NammaFlood-Sentinel](https://github.com/vasudev1876961/NammaFlood-Sentinel.git) | Complete, clean Git repository with passing tests, seed scripts, and verification suite. |
+| **4. Presentation Deck / Pitch Document** | [`NammaFlood_Sentinel_IBM_Bobathon_Submission.pptx`](NammaFlood_Sentinel_IBM_Bobathon_Submission.pptx) <br> Pitch: [`docs/submission_pitch.md`](docs/submission_pitch.md) | Professional 8-slide PowerPoint deck and speaking script tailored for hackathon judges. |
+| **5. Video Demonstration Script** | [`docs/VIDEO_DEMO_SCRIPT.md`](docs/VIDEO_DEMO_SCRIPT.md) | Timecoded 4-5 minute scene-by-scene demonstration script with screen actions and narration. |
+
+---
+
 ## 🌟 Executive Overview
 Bengaluru frequently faces acute urban waterlogging during monsoon downpours, causing paralyzing traffic gridlocks at key junctions (Silk Board, Ecospace, Hebbal), inundating low-lying residential layouts, and straining municipal response teams. 
 

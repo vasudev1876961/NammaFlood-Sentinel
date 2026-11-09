@@ -42,6 +42,8 @@ backend/app/uploads/*
 !backend/app/uploads/.gitkeep
 backend/data/raw/*
 !backend/data/raw/.gitkeep
+data/uploads/*
+!data/uploads/.gitkeep
 
 # Environment variables
 .env

@@ -27,6 +27,8 @@ def main():
     print("\n--- 1. Documentation & Submission Deliverables ---")
     docs = [
         ("README.md", "Master Project README"),
+        ("docs/SUBMISSION_DOCUMENT.md", "Master Submission Document"),
+        ("docs/VIDEO_DEMO_SCRIPT.md", "Video Demonstration Script"),
         ("docs/architecture.md", "System Architecture & Agent Topology"),
         ("docs/database_schema.md", "Database Schema Specification"),
         ("docs/dataset_documentation.md", "Dataset Provenance Documentation"),
@@ -125,3 +127,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
