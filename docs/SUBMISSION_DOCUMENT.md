@@ -403,3 +403,4 @@ The solution is designed for seamless integration into Bengaluru’s existing mu
 ## 9. Conclusion
 
 NammaFlood Sentinel demonstrates how modern agentic AI can solve acute urban resilience challenges when built with domain expertise, mathematical rigor, and ethical safety guardrails. By fusing citizen imagery, live meteorology, geospatial hydrology, and machine learning triage under strict human supervision, NammaFlood Sentinel delivers the intelligence Bengaluru needs to keep its streets moving and its citizens safe.
+

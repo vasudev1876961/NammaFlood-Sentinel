@@ -4,24 +4,67 @@
 
 @layer base {
   body {
-    @apply bg-slate-900 text-slate-100 antialiased font-sans;
+    @apply bg-slate-950 text-slate-100 antialiased font-sans selection:bg-sky-500 selection:text-white;
   }
 }
 
 /* Custom leaflet styling overrides for dark theme */
 .leaflet-popup-content-wrapper {
-  background: #0f172a !important;
+  background: #090d16 !important;
   color: #f8fafc !important;
-  border: 1px solid #334155 !important;
+  border: 1px solid #1e293b !important;
   border-radius: 1rem !important;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5) !important;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.75) !important;
 }
 
 .leaflet-popup-tip {
-  background: #0f172a !important;
+  background: #090d16 !important;
 }
 
 .leaflet-popup-close-button {
   color: #94a3b8 !important;
 }
 
+/* Custom glowing and pulsing utilities */
+@keyframes flow-line {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-flow-line {
+  stroke-dasharray: 6 6;
+  animation: flow-line 2s linear infinite;
+}
+
+@keyframes terminal-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor {
+  animation: terminal-cursor 1s infinite;
+}
+
+/* Custom terminal scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.8);
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.6);
+}

@@ -145,3 +145,4 @@ Add these lower-third graphical captions during editing:
 - **[2:40]** `Deduplication: Haversine <= 150m + 64-bit dHash Hamming <= 8`
 - **[3:45]** `Safety Gate: Mandatory Human-in-the-Loop Sign-Off (Autonomous Dispatch Disabled)`
 - **[4:30]** `ML Accuracy: Random Forest Macro F1 = 1.0000 | XGBoost Macro F1 = 0.9946`
+
