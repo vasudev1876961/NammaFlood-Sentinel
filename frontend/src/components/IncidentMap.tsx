@@ -202,13 +202,13 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
   };
 
   return (
-    <div className="relative w-full h-[560px] rounded-3xl overflow-hidden border border-slate-800/90 shadow-2xl bg-slate-950">
+    <div className="relative w-full h-[560px] rounded-3xl overflow-hidden border border-slate-800/90 shadow-2xl bg-slate-950" style={{ isolation: 'isolate' }}>
       
       {/* Map Element */}
       <div ref={mapContainerRef} className="w-full h-full z-0" />
       
       {/* Floating Map Control Toolbar */}
-      <div className="absolute top-4 left-4 z-[1000] flex flex-wrap items-center gap-1.5 bg-slate-950/95 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="absolute top-4 left-4 z-30 flex flex-wrap items-center gap-1.5 bg-slate-950/95 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800 shadow-xl">
         
         {/* Risk Filter Buttons */}
         <button
@@ -282,7 +282,7 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
       </div>
 
       {/* Map Legend Overlay */}
-      <div className="absolute bottom-4 left-4 z-[1000] bg-slate-950/95 backdrop-blur-md p-3 rounded-2xl border border-slate-800 text-xs shadow-2xl space-y-1.5 max-w-[210px]">
+      <div className="absolute bottom-4 left-4 z-30 bg-slate-950/95 backdrop-blur-md p-3 rounded-2xl border border-slate-800 text-xs shadow-2xl space-y-1.5 max-w-[210px]">
         <div className="font-extrabold text-slate-200 text-[10px] uppercase tracking-wider mb-1 flex items-center space-x-1">
           <Layers className="w-3 h-3 text-sky-400" />
           <span>Risk Severity Legend</span>

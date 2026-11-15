@@ -5,6 +5,7 @@ from pydantic import BaseModel
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 class Settings(BaseModel):
+    BASE_DIR: Path = BASE_DIR
     PROJECT_NAME: str = "NammaFlood Sentinel"
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"

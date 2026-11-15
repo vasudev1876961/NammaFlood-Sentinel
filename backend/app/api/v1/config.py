@@ -91,3 +91,4 @@ def set_gemini_key(req: GeminiKeyRequest):
         "message": f"Gemini API key successfully verified and connected! Using model: {req.model}",
         "masked_key": clean_key[:6] + "..." + clean_key[-4:]
     }
+

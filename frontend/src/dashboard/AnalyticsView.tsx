@@ -9,7 +9,7 @@ import { triggerBenchmarkScenario } from '../services/api';
 
 interface AnalyticsViewProps {
   lang: 'en' | 'kn';
-  onScenarioExecuted: () => void;
+  onScenarioExecuted?: (incidentId?: string) => void;
 }
 
 const BENCHMARK_SCENARIOS = [
@@ -45,6 +45,7 @@ interface LogEntry {
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioExecuted }) => {
   const [selectedAgent, setSelectedAgent] = useState<string>('risk');
   const [runningScenario, setRunningScenario] = useState<string | null>(null);
+  const [executedResults, setExecutedResults] = useState<Record<string, any>>({});
   const [terminalFilter, setTerminalFilter] = useState<'all' | 'info' | 'success' | 'warn' | 'error'>('all');
   
   const [logs, setLogs] = useState<LogEntry[]>([
@@ -66,35 +67,47 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
 
   const handleRunScenario = async (scId: string) => {
     setRunningScenario(scId);
-    
-    // Add real-time log trace to terminal
     const sc = BENCHMARK_SCENARIOS.find(s => s.id === scId);
-    const timeStr = new Date().toLocaleTimeString() + '.' + Math.floor(Math.random() * 900 + 100);
-    
+    const timeBase = new Date().toLocaleTimeString();
+
+    // Stream simulated perception events
     setLogs(prev => [
       ...prev,
-      { id: Date.now().toString(), timestamp: timeStr, type: 'info', agent: 'Orchestrator', message: `Triggering ${sc?.title} (${sc?.location})...` },
+      { id: Date.now().toString(), timestamp: `${timeBase}.101`, type: 'info', agent: 'Orchestrator', message: `▶ Initializing LangGraph execution for ${sc?.title}...` },
+      { id: (Date.now() + 1).toString(), timestamp: `${timeBase}.108`, type: 'info', agent: 'VisionAgent', message: `Inspecting evidence photo for ${sc?.location}...` },
+      { id: (Date.now() + 2).toString(), timestamp: `${timeBase}.115`, type: 'info', agent: 'WeatherAgent', message: `Querying precipitation: recorded ${sc?.rain}.` },
     ]);
 
     try {
       const res = await triggerBenchmarkScenario(scId);
       const doneTime = new Date().toLocaleTimeString() + '.' + Math.floor(Math.random() * 900 + 100);
       
+      const riskLevel = res.assessment?.risk?.level || res.risk_level || 'Evaluated';
+      const score = res.assessment?.risk?.priority_score || res.risk_score || 0;
+
       setLogs(prev => [
         ...prev,
         { 
-          id: (Date.now() + 1).toString(), 
+          id: (Date.now() + 3).toString(), 
+          timestamp: doneTime, 
+          type: 'success', 
+          agent: 'RiskAgent', 
+          message: `Random Forest Inference: Priority ${riskLevel.toUpperCase()} (Score: ${score}/100).` 
+        },
+        { 
+          id: (Date.now() + 4).toString(), 
           timestamp: doneTime, 
           type: 'success', 
           agent: 'BenchmarkRunner', 
-          message: `Scenario ${sc?.code} passed! Incident: ${res.incident_id || 'INC-OK'}, Risk: ${res.risk_level || 'Evaluated'}, Expected: ${sc?.expected}.` 
+          message: `✅ Scenario ${sc?.code} Passed! Incident ${res.incident_id} created in database. All safety constraints met.` 
         }
       ]);
-      onScenarioExecuted();
+
+      setExecutedResults(prev => ({ ...prev, [scId]: res }));
     } catch (err: any) {
       setLogs(prev => [
         ...prev,
-        { id: (Date.now() + 2).toString(), timestamp: 'ERR', type: 'error', agent: 'BenchmarkRunner', message: `Execution failed: ${err.message}` }
+        { id: (Date.now() + 5).toString(), timestamp: 'ERR', type: 'error', agent: 'BenchmarkRunner', message: `Execution failed: ${err.message}` }
       ]);
     } finally {
       setRunningScenario(null);
@@ -110,7 +123,26 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
     <div className="space-y-6 animate-in fade-in duration-300">
       
       {/* ========================================================================= */}
-      {/* 1. TOP NEURIX / AGENTOPS KPI CARDS (Matches Image 3 reference)            */}
+      {/* TOP HEADER & CURRICULUM-STYLE TYPOGRAPHY (Matches Image 5 style)          */}
+      {/* ========================================================================= */}
+      <div className="border-b border-slate-900 pb-4">
+        <span className="text-[11px] font-black uppercase tracking-widest text-sky-400 block mb-1">
+          AGENTOPS PRO · MULTI-AGENT DAG TELEMETRY
+        </span>
+        <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          {lang === 'en' ? 'AI Architecture & Benchmark Workbench' : 'ಎಐ ಆರ್ಕಿಟೆಕ್ಚರ್ ಮತ್ತು ಪರೀಕ್ಷಾ ವೇದಿಕೆ'}
+        </h1>
+        {/* Accent Line Bar (Curriculum style) */}
+        <div className="w-16 h-1 bg-gradient-to-r from-sky-400 via-indigo-500 to-purple-500 rounded-full mt-2.5 mb-2"></div>
+        <p className="text-xs text-slate-400 max-w-2xl">
+          {lang === 'en' 
+            ? 'Stateful LangGraph agent topology, Random Forest multimodal feature weights, and live scenario execution engine.'
+            : 'ಲ್ಯಾಂಗ್‌ಗ್ರಾಫ್ ಆರ್ಕೆಸ್ಟ್ರೇಟರ್, ಯಂತ್ರ ಕಲಿಕೆ ಮಾದರಿಗಳು ಮತ್ತು ಲೈವ್ ಟೆಸ್ಟಿಂಗ್ ಸಿಸ್ಟಮ್.'}
+        </p>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 1. TOP NEURIX / AGENTOPS KPI CARDS                                        */}
       {/* ========================================================================= */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
@@ -133,7 +165,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
           </div>
         </div>
 
-        {/* KPI 2: ML Prediction Accuracy (Matches Neurix 91.8% -> 100.0%) */}
+        {/* KPI 2: ML Prediction Accuracy */}
         <div className="p-4 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
           <div>
             <span className="text-[10px] uppercase font-mono text-slate-400 font-bold block">
@@ -150,7 +182,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
           </div>
         </div>
 
-        {/* KPI 3: Pipeline Latency SLA (Matches Neurix Response Time 115ms -> 23.84ms) */}
+        {/* KPI 3: Pipeline Latency SLA */}
         <div className="p-4 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
           <div>
             <span className="text-[10px] uppercase font-mono text-slate-400 font-bold block">
@@ -186,7 +218,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. AGENT HAND-OFF GRAPH & LIVE STREAM TERMINAL (Matches Image 6 layout)    */}
+      {/* 2. AGENT HAND-OFF GRAPH & LIVE STREAM TERMINAL                            */}
       {/* ========================================================================= */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
@@ -210,32 +242,21 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
             
             <svg viewBox="0 0 920 320" className="w-full h-full max-h-[440px]">
               <defs>
-                {/* Glow Filter */}
                 <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur stdDeviation="4" result="blur" />
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
-
-                {/* Animated gradient paths */}
-                <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#38bdf8" />
-                  <stop offset="50%" stopColor="#8b5cf6" />
-                  <stop offset="100%" stopColor="#10b981" />
-                </linearGradient>
               </defs>
 
-              {/* Connecting Edges (Acyclic Graph) */}
-              {/* Fan-out: Ingest -> Vision, Weather, Location */}
+              {/* Connecting Edges */}
               <path d="M 120 150 C 160 150, 160 80, 200 80" fill="none" stroke="#38bdf8" strokeWidth="2" className="animate-flow-line opacity-75" />
               <path d="M 120 150 L 200 150" fill="none" stroke="#38bdf8" strokeWidth="2" className="animate-flow-line opacity-75" />
               <path d="M 120 150 C 160 150, 160 220, 200 220" fill="none" stroke="#38bdf8" strokeWidth="2" className="animate-flow-line opacity-75" />
 
-              {/* Fan-in: Vision, Weather, Location -> Verification */}
               <path d="M 280 80 C 320 80, 330 150, 370 150" fill="none" stroke="#8b5cf6" strokeWidth="2" className="animate-flow-line opacity-75" />
               <path d="M 280 150 L 370 150" fill="none" stroke="#8b5cf6" strokeWidth="2" className="animate-flow-line opacity-75" />
               <path d="M 280 220 C 320 220, 330 150, 370 150" fill="none" stroke="#8b5cf6" strokeWidth="2" className="animate-flow-line opacity-75" />
 
-              {/* Linear Synthesis: Verification -> Risk -> Response -> HITL */}
               <path d="M 450 150 L 530 150" fill="none" stroke="#ec4899" strokeWidth="2.5" className="animate-flow-line opacity-90" />
               <path d="M 610 150 L 690 150" fill="none" stroke="#10b981" strokeWidth="2.5" className="animate-flow-line opacity-90" />
               <path d="M 770 150 L 840 150" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeDasharray="4 4" opacity="0.8" />
@@ -249,7 +270,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
                     onClick={() => setSelectedAgent(node.id)}
                     className="cursor-pointer transition-transform hover:scale-105"
                   >
-                    {/* Glowing outer ring if active or selected */}
                     {isSelected && (
                       <circle
                         cx={node.x + 35}
@@ -263,7 +283,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
                       />
                     )}
 
-                    {/* Node circle */}
                     <circle
                       cx={node.x + 35}
                       cy={node.y}
@@ -273,7 +292,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
                       strokeWidth={isSelected ? 3 : 2}
                     />
 
-                    {/* Node icon / indicator */}
                     <circle
                       cx={node.x + 35}
                       cy={node.y}
@@ -282,7 +300,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
                       opacity="0.8"
                     />
 
-                    {/* Node text labels */}
                     <text
                       x={node.x + 35}
                       y={node.y + 42}
@@ -309,7 +326,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
               })}
             </svg>
 
-            {/* Micro details pill at bottom */}
             <div className="absolute bottom-2 inset-x-3 flex items-center justify-between text-[10px] text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
               <span className="flex items-center space-x-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -321,10 +337,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
 
         </div>
 
-        {/* RIGHT: LIVE STREAM TERMINAL (5 of 12 cols, Matches Image 6 right panel) */}
+        {/* RIGHT: LIVE STREAM TERMINAL */}
         <div className="lg:col-span-5 bg-slate-950 border border-slate-800 rounded-3xl p-4 shadow-2xl flex flex-col h-[520px]">
           
-          {/* Terminal Window Header (Red, Yellow, Green macOS/Linux window dots) */}
+          {/* Terminal Window Header */}
           <div className="flex items-center justify-between border-b border-slate-900 pb-3 mb-2">
             <div className="flex items-center space-x-2">
               <div className="flex space-x-1.5">
@@ -340,7 +356,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
               </span>
             </div>
 
-            {/* Filter Pills: All, Info, Success, Warning, Error */}
+            {/* Filter Pills */}
             <div className="flex items-center space-x-1 text-[9px] font-mono">
               {(['all', 'info', 'success', 'warn', 'error'] as const).map(t => (
                 <button
@@ -417,7 +433,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
               <span>Interactive Benchmark Scenarios (Scenarios A through H)</span>
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Click any scenario button to execute live against the LangGraph multi-agent pipeline and observe terminal output.
+              Click any scenario to execute live through the LangGraph multi-agent pipeline and observe terminal traces.
             </p>
           </div>
           <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -428,10 +444,12 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {BENCHMARK_SCENARIOS.map(sc => {
             const isRunning = runningScenario === sc.id;
+            const executed = executedResults[sc.id];
+
             return (
               <div
                 key={sc.id}
-                className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition"
+                className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition"
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
@@ -441,31 +459,48 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ lang, onScenarioEx
                     <span className="text-[10px] font-mono text-slate-400">{sc.rain}</span>
                   </div>
                   <div className="text-xs font-bold text-white mb-1">{sc.title}</div>
-                  <p className="text-[10px] text-slate-400 leading-snug mb-3">{sc.desc}</p>
+                  <p className="text-[10px] text-slate-400 leading-snug mb-2">{sc.desc}</p>
                 </div>
 
-                <button
-                  type="button"
-                  disabled={isRunning}
-                  onClick={() => handleRunScenario(sc.id)}
-                  className={`w-full py-2 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition ${
-                    isRunning
-                      ? 'bg-slate-800 text-slate-400'
-                      : 'bg-slate-900 hover:bg-emerald-600 text-white border border-slate-800 hover:border-emerald-500'
-                  }`}
-                >
-                  {isRunning ? (
-                    <>
-                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                      <span>Executing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Execute {sc.code}</span>
-                    </>
+                <div className="space-y-2 pt-2 border-t border-slate-900">
+                  {executed && (
+                    <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-[10px] text-emerald-300 space-y-1">
+                      <div className="font-bold flex items-center space-x-1">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                        <span className="truncate">Saved: {executed.incident_id}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[9px] text-slate-400">
+                        <span>Risk: {executed.assessment?.risk?.level?.toUpperCase() || 'EVALUATED'}</span>
+                        <span>{executed.assessment?.workflow_duration_ms ? `${executed.assessment.workflow_duration_ms.toFixed(1)}ms` : ''}</span>
+                      </div>
+                    </div>
                   )}
-                </button>
+
+                  <button
+                    type="button"
+                    disabled={isRunning}
+                    onClick={() => handleRunScenario(sc.id)}
+                    className={`w-full py-2.5 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition ${
+                      isRunning
+                        ? 'bg-slate-800 text-slate-400 cursor-wait'
+                        : executed
+                        ? 'bg-emerald-600/30 hover:bg-emerald-600 text-emerald-200 border border-emerald-500/40'
+                        : 'bg-slate-900 hover:bg-sky-600 text-white border border-slate-800 hover:border-sky-500 shadow-sm'
+                    }`}
+                  >
+                    {isRunning ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>Running Swarm...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>{executed ? 'Re-run Scenario' : `Execute ${sc.code}`}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             );
           })}

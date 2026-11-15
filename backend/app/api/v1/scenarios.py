@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse
 
 from backend.app.database.session import get_db
-from backend.app.models.models import Incident, Report, AgentRun
+from backend.app.models.models import Incident, Report, AgentRun, IncidentUpdate
 from backend.app.orchestration.workflow import MultiAgentOrchestrator
 from backend.app.core.config import settings
 

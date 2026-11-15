@@ -68,7 +68,7 @@ export const IncidentDetailModal: React.FC<IncidentDetailModalProps> = ({ incide
 
   if (loading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+      <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4">
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full text-center space-y-4 shadow-2xl">
           <div className="w-12 h-12 border-4 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <div className="space-y-1">
@@ -82,7 +82,7 @@ export const IncidentDetailModal: React.FC<IncidentDetailModalProps> = ({ incide
 
   if (error || !detail) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+      <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4">
         <div className="bg-slate-900 border border-red-500/30 rounded-3xl p-6 max-w-md w-full text-center space-y-4 shadow-2xl">
           <AlertTriangle className="w-12 h-12 text-red-400 mx-auto" />
           <p className="text-red-300 text-sm">{error || 'Incident details not found.'}</p>
@@ -101,7 +101,7 @@ export const IncidentDetailModal: React.FC<IncidentDetailModalProps> = ({ incide
     : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 shadow-emerald-500/10';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-2 sm:p-4 md:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-2 sm:p-4 md:p-6 overflow-y-auto">
       <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-5xl w-full my-auto shadow-2xl overflow-hidden flex flex-col max-h-[94vh]">
         
         {/* Executive Header */}
