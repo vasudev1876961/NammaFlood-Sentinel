@@ -30,11 +30,11 @@ Before pressing record, ensure the demo environment is prepared:
 * **Screen Display:** Slide 1 and Slide 2 of the presentation deck (`NammaFlood_Sentinel_IBM_Bobathon_Submission.pptx`), or the homepage banner showing Bengaluru waterlogging context.
 * **On-Screen Action:** Smooth zoom on title slide, then transition to newspaper headlines / footage of waterlogged Silk Board and Ecospace Bellandur.
 * **Voiceover Narration:**
-  > *"Hello, respected judges and the IBM Bobathon evaluation committee. We are thrilled to present **NammaFlood Sentinel** — a multimodal agentic intelligence platform designed for urban flood detection, risk assessment, and civic response coordination in Bengaluru.*
+  > *"Hello everyone, and welcome to our IBM Bobathon presentation. We are excited to present **NammaFlood Sentinel** — an AI platform built to tackle Bengaluru’s chronic urban waterlogging crisis.
   >
-  > *Every monsoon, Bengaluru faces an acute crisis. High-intensity rainfall overwhelms encroached storm drains (Rajakaluves), transforming economic lifelines like the Central Silk Board Junction and the Outer Ring Road into waterlogged bottlenecks. Traffic comes to a standstill for five to eight hours, costing our city over ₹225 Crore annually.*
+  > Every monsoon, heavy rainfall overwhelms storm drains across Bengaluru. Key junctions like Central Silk Board and the Outer Ring Road turn into rivers, stalling traffic for hours and costing our city over ₹225 Crore each year.
   >
-  > *While citizens post desperate photos on social media, civic control rooms are paralyzed by fragmented data, duplicate viral reposts, and unverified claims. We built NammaFlood Sentinel to turn this chaos into verified, explainable civic intelligence."*
+  > While citizens post photos on social media, civic control rooms get overwhelmed with fragmented data, viral duplicate reposts, and unverified claims. We built NammaFlood Sentinel to cut through that noise. It turns scattered citizen photos and live weather data into verified, explainable civic intelligence so authorities know exactly where to send help first."*
 
 ---
 
@@ -42,16 +42,18 @@ Before pressing record, ensure the demo environment is prepared:
 * **Screen Display:** Transition to Tab 3 (Analytics View) showing the interactive **LangGraph Execution DAG**.
 * **On-Screen Action:** Hover over the parallel fan-out nodes (Vision, Weather, Location) and trace the execution path through Verification, Risk Intelligence, and Response Coordinator.
 * **Voiceover Narration:**
-  > *"At the core of NammaFlood Sentinel is an asynchronous multi-agent architecture orchestrated by a **LangGraph** directed acyclic graph. Rather than a brittle sequential chain, our system runs six cooperating specialist AI agents:*
+  > *"Under the hood, NammaFlood Sentinel runs on a team of six specialized AI agents, orchestrated with **LangGraph**.
   >
-  > *1. The **Vision Agent** inspects uploaded smartphone photos, measuring turbid silt water accumulation and distinguishing flooded roads from wet asphalt glare.*
-  > *2. The **Weather Agent** pulls live Open-Meteo precipitation data with an intelligent 15-minute coordinate cache and IMD threshold categorization.*
-  > *3. The **Location Agent** verifies coordinates within the Greater Bengaluru boundary and calculates exact distances to chronic BBMP flood hotspots.*
-  > *4. The **Verification Agent** uses Haversine clustering and 64-bit perceptual image difference hashing (dHash) to detect viral duplicate reports without losing original evidence.*
-  > *5. The **Risk Intelligence Agent** fuses seven multimodal features using a trained Random Forest classifier with 100% test accuracy alongside an explainable heuristic baseline.*
-  > *6. And finally, the **Response Coordinator Agent** drafts resource-specific civic action plans.*
+  > Rather than running in a slow line, our agents work together in parallel:
   >
-  > *Notice our benchmark: the entire multi-agent pipeline completes in just **23.98 milliseconds**!"*
+  > 1. Our **Vision Agent** inspects uploaded smartphone photos, measuring water accumulation while ignoring dry asphalt reflections.
+  > 2. Our **Weather Agent** pulls live rainfall data from Open-Meteo with automatic 15-minute caching.
+  > 3. Our **Location Agent** checks coordinates against known BBMP flood hotspots and lake catchments.
+  > 4. Our **Verification Agent** detects viral duplicate photos using perceptual image hashing without losing original evidence.
+  > 5. Our **Risk Agent** calculates an overall severity score from 0 to 100 using a trained Random Forest classifier.
+  > 6. And our **Response Agent** drafts a targeted action plan for municipal teams.
+  >
+  > Best of all, this entire multi-agent pipeline completes in just **24 milliseconds**!"*
 
 ---
 
@@ -65,13 +67,15 @@ Before pressing record, ensure the demo environment is prepared:
   5. Click the glowing **"Submit Report to Civic Control"** button.
   6. Point out the instant submission feedback card displaying live agent confirmation badges (`Vision: Verified`, `Weather: Live Heavy Rain`, `Location: BBMP Hotspot`).
 * **Voiceover Narration:**
-  > *"Let us see NammaFlood Sentinel in action from the citizen’s perspective. Built with a mobile-first, responsive design, the portal is bilingual in both English and Kannada, ensuring zero language barrier for any Bengalurean.*
+  > *"Now let's see how simple this is for everyday citizens.
   >
-  > *A citizen reporting waterlogging doesn't need to sign up or fill out lengthy forms. They simply take a photo, allow their browser GPS to locate them, or pick their junction.*
+  > Built with a mobile-first design, our portal is bilingual — with a single click right here, anyone can switch between English and Kannada.
   >
-  > *Watch: I will select the Central Silk Board Junction preset and upload a photo showing deep runoff water. When I hit submit, our backend ingests the report and instantly triggers the parallel LangGraph agent swarm.*
+  > There’s no login or paperwork needed. A commuter simply taps their junction — like Central Silk Board here — or lets their GPS locate them.
   >
-  > *Within seconds, the citizen receives a transparent multi-agent audit receipt confirming their report has been verified and delivered directly to the municipal response room."*
+  > Next, they upload a photo and add a quick note: 'Severe waterlogging under the flyover, cars stranded.'
+  >
+  > When they hit **Submit**, our backend triggers the parallel multi-agent swarm. Within seconds, the citizen gets a transparent receipt confirming their report has been verified and delivered straight to the city's emergency control room."*
 
 ---
 
@@ -87,13 +91,13 @@ Before pressing record, ensure the demo environment is prepared:
      - Click on the pulsing red marker at Central Silk Board to view its popup.
   4. Scroll down to the **Live Incident Triage Queue** table. Highlight how reports are ranked by risk score.
 * **Voiceover Narration:**
-  > *"Now let's switch hats to the municipal control room — the BBMP and Bengaluru Traffic Police command center.*
+  > *"Now let’s switch over to the municipal command center — the dashboard used by BBMP officers and Bengaluru Traffic Police.
   >
-  > *Here, officers are greeted by a unified operational dashboard. Across the top, our KPI grid summarizes city-wide conditions and active approval queues in real time.*
+  > At the top, officers see live city-wide stats: active high-risk incidents, pending approvals, and system speed.
   >
-  > *On our interactive GIS map, powered by high-contrast cartography, every incident is plotted with dynamic risk rings. Officers can filter by severity tier or overlay Bengaluru's historical waterlogging hotspots and lake catchment zones.*
+  > Below that is our live interactive map. Every incident is plotted with color-coded risk markers. Officers can filter for critical areas, or toggle our hotspot overlay to see historical waterlogging zones and lake catchment basins.
   >
-  > *Notice that Silk Board is highlighted with a critical priority score of 91. Let's inspect this incident in depth."*
+  > Notice that Central Silk Board is highlighted with a critical risk score of 91. Let's click **Deep Inspect** to look into it."*
 
 ---
 
@@ -108,13 +112,13 @@ Before pressing record, ensure the demo environment is prepared:
   4. Click the green **"Authorize & Dispatch Civic Response"** button.
   5. Show the modal update: status changes to `action_approved`, and the immutable audit timeline logs the officer's name, action, and timestamp.
 * **Voiceover Narration:**
-  > *"This is our Human-in-the-Loop command console. We believe AI should empower human officers, not replace their judgment.*
+  > *"This is our deep inspection console. On the left, the officer sees the raw photo evidence and exact GPS coordinates. On the right is the complete multi-agent dossier: image confidence, live rainfall rates, and drainage proximity.
   >
-  > *On the left, the officer sees raw visual evidence and exact location coordinates. On the right is the complete multi-agent dossier: vision confidence, live precipitation rates, and catchment proximity.*
+  > What makes this special is our transparent explainability breakdown. We don’t just show an arbitrary number; the officer sees exactly how the score was calculated — 35 points for visual water coverage, 25 points for heavy rain, and 20 points for hotspot proximity.
   >
-  > *Notice our transparent explainability breakdown: the officer doesn't just see an arbitrary number; they see exactly how the score was calculated — 35 points for visual water, 25 points for heavy rainfall, and 20 points for hotspot proximity.*
+  > Most importantly, we enforce a strict **Human-in-the-Loop** safety boundary. No pumps or sirens are dispatched automatically. The officer reviews the recommendations, selects: 'Dispatch 100 HP diesel suction pump', and clicks **Authorize**.
   >
-  > *Because NammaFlood Sentinel strictly enforces ethical safety guardrails, no pump or siren is dispatched autonomously. The officer reviews the agent's recommendations, selects the appropriate response units, and officially signs off. The immutable audit trail instantly records the decision for complete civic accountability."*
+  > The decision is instantly logged to an immutable audit trail for complete civic accountability."*
 
 ---
 
@@ -126,13 +130,15 @@ Before pressing record, ensure the demo environment is prepared:
   3. Click **"Run Scenario F"** (Duplicate Viral Image) to show dHash deduplication in action.
   4. Switch briefly to the GitHub repository and show `docs/bob_development_log.md` detailing the six IBM Bob co-development milestones.
 * **Voiceover Narration:**
-  > *"Under the hood, NammaFlood Sentinel is mathematically validated. Our Random Forest classifier achieves a Macro F1 score of 1.0000 on held-out test data, outperforming both XGBoost and baseline heuristics.*
+  > *"Finally, let’s look at our testing and analytics.
   >
-  > *Our automated test suite verifies 100% pass rates across eight comprehensive real-world scenarios — from extreme cloudbursts to dry asphalt shadows, viral social media reposts, and weather API outages.*
+  > Our trained Random Forest model achieved a perfect 1.0 Macro F1 score on test data, outperforming both XGBoost and baseline heuristics.
   >
-  > *Throughout this journey, **IBM Bob** served as our core architectural co-pilot: helping us design the LangGraph state machine, formulate the turbid silt color masks, engineer the 64-bit dHash deduplication logic, and enforce the human-in-the-loop safety gates.*
+  > Our automated test suite runs 18 comprehensive tests covering extreme cloudbursts, dark pavement shadows, offline weather APIs, and viral duplicate photos — with a 100% pass rate.
   >
-  > *NammaFlood Sentinel transforms fragmented data into life-saving civic action. Thank you for your time, and we look forward to making Bengaluru’s streets smarter and living better!"*
+  > Throughout this journey, **IBM Bob** was our central co-pilot: helping us architect the LangGraph state machine, build the image deduplication logic, train the ML models, and establish the human-in-the-loop safety gates.
+  >
+  > NammaFlood Sentinel turns scattered citizen photos into fast, life-saving civic action. Thank you so much for your time, and we look forward to making Bengaluru’s streets smarter and living better!"*
 
 ---
 
@@ -145,4 +151,41 @@ Add these lower-third graphical captions during editing:
 - **[2:40]** `Deduplication: Haversine <= 150m + 64-bit dHash Hamming <= 8`
 - **[3:45]** `Safety Gate: Mandatory Human-in-the-Loop Sign-Off (Autonomous Dispatch Disabled)`
 - **[4:30]** `ML Accuracy: Random Forest Macro F1 = 1.0000 | XGBoost Macro F1 = 0.9946`
+
+---
+
+## Demo State Reset Procedure (Between Takes)
+
+If you need to rehearse or re-record any scene, you can restore clean demo data in under 2 seconds:
+```powershell
+# Reset SQLite database to pristine demo state with seeded Silk Board & Ecospace incidents:
+python scripts/seed_database.py
+```
+This guarantees the dashboard and triage queues are in the exact baseline state described in the script.
+
+---
+
+## IBM Bobathon Judging Rubric Alignment Matrix
+
+Every scene in this script is engineered to directly prove one or more dimensions of the competition rubric:
+
+| Rubric Dimension | Weight | Key Evidence Demonstrated in Video | Script Scene |
+| :--- | :---: | :--- | :---: |
+| **Completeness & Feasibility** | 25% | Fully working end-to-end full-stack platform (React + FastAPI + SQLite), 18/18 passing tests, LangGraph state machine, real image upload & triage. | Scene 2, 3, 4, 5 |
+| **Creativity & Innovation** | 25% | Multimodal evidence fusion (Vision + Weather + GIS), 64-bit dHash deduplication for viral reposts, and explainable factor allocation bar charts. | Scene 2, 3, 5, 6 |
+| **Design & Usability** | 25% | Mobile-first citizen reporting with English & Kannada (ಕನ್ನಡ) localization, Leaflet GIS command center with dynamic risk rings, 1-click preset chips. | Scene 3, 4, 5 |
+| **Effectiveness & Efficiency** | 25% | 23.98 ms multi-agent pipeline latency, Random Forest 1.0000 Macro F1 score, zero false negatives on critical inundation, and strict HITL safety gates. | Scene 2, 5, 6 |
+
+---
+
+## Fast-Track 3-Minute Alternative Cue Sheet (If Time is Strict)
+
+If the submission platform enforces a strict 3-minute hard ceiling, follow this condensed cue sheet:
+
+- **[0:00 – 0:30] The Crisis & The Solution:** Introduce Bengaluru monsoon waterlogging (Silk Board / ORR gridlocks, ₹225 Cr annual loss) and define NammaFlood Sentinel as a LangGraph-powered multimodal multi-agent decision support platform.
+- **[0:30 – 1:15] Citizen Ingestion:** Switch to Tab 1 (Citizen Portal). Show Kannada toggle, click Silk Board preset, upload `tests/fixtures/sample_flood.jpg`, click Submit, and show instant multi-agent audit receipt.
+- **[1:15 – 2:05] Civic Command Center & HITL Triage:** Switch to Tab 2 (Admin Dashboard). Show Leaflet GIS map with pulsing critical markers, open Silk Board Incident modal, highlight explainable factor allocation (+35 pts water, +25 pts rain, +20 pts hotspot), select diesel pump, and click "Authorize & Dispatch Civic Response".
+- **[2:05 – 2:40] Multi-Agent DAG & ML Validation:** Switch to Tab 3 (Analytics View). Show LangGraph 6-agent parallel DAG (23.98 ms latency) and Random Forest 1.0000 Macro F1 benchmark.
+- **[2:40 – 3:00] IBM Bob Journey & Closing:** Highlight `docs/bob_development_log.md` detailing the 6 IBM Bob co-development milestones, state the GitHub repository link, and conclude with the vision for smarter streets and resilient living.
+
 

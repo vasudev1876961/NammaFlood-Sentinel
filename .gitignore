@@ -60,3 +60,13 @@ Thumbs.db
 .coverage
 htmlcov/
 
+# Local Video Demonstrations & Large Media (>100MB)
+*.mp4
+*.mov
+*.avi
+*.mkv
+video-demo.mp4
+*_backup.pptx
+*.tmp
+
+
