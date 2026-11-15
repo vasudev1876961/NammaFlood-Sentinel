@@ -37,8 +37,10 @@ class Settings(BaseModel):
     OPEN_METEO_API_URL: str = "https://api.open-meteo.com/v1/forecast"
     WEATHER_CACHE_TTL_SECONDS: int = 900
     
-    # Vision
+    # Vision & Multimodal LLM
     VISION_MODEL_ID: str = os.getenv("VISION_MODEL_ID", "")
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", os.getenv("GOOGLE_API_KEY", ""))
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
 
 settings = Settings()
 

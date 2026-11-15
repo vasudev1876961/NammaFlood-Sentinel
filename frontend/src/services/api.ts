@@ -94,3 +94,22 @@ export async function triggerBenchmarkScenario(scenarioId: string): Promise<any>
 export function downloadIncidentsCSV(): void {
   window.open(`${API_BASE}/export/csv`, '_blank');
 }
+
+export async function fetchGeminiStatus(): Promise<{ enabled: boolean; masked_key: string; model: string }> {
+  const res = await fetch(`${API_BASE}/config/gemini-status`);
+  if (!res.ok) throw new Error('Failed to fetch Gemini status');
+  return res.json();
+}
+
+export async function updateGeminiKey(apiKey: string, model: string = 'gemini-1.5-flash'): Promise<{ success: boolean; message: string; masked_key?: string }> {
+  const res = await fetch(`${API_BASE}/config/gemini-key`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ api_key: apiKey, model }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: 'Failed to update Gemini API key' }));
+    throw new Error(err.detail || 'Failed to update Gemini API key');
+  }
+  return res.json();
+}

@@ -25,6 +25,29 @@
   color: #94a3b8 !important;
 }
 
+/* Sleek dark tactical theme for OpenStreetMap without ANY watermarks */
+.tactical-dark-tiles {
+  filter: invert(100%) hue-rotate(195deg) brightness(85%) contrast(95%) saturate(80%) !important;
+}
+
+.tactical-light-tiles {
+  filter: none !important;
+}
+
+/* Custom Hotspot and Incident Tooltips */
+.hotspot-tooltip {
+  background: #090d16 !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+  border-radius: 0.6rem !important;
+  font-size: 10px !important;
+  padding: 4px 8px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7) !important;
+}
+.hotspot-tooltip::before {
+  border-top-color: #090d16 !important;
+}
+
 /* Custom glowing and pulsing utilities */
 @keyframes flow-line {
   from {

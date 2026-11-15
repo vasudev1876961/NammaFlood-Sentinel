@@ -81,6 +81,52 @@ class VisionAgent:
             "evidence": evidence
         }
 
+    def analyze_with_gemini(self, img: Image.Image) -> dict | None:
+        """Invokes Google Gemini Multimodal Vision API for expert urban flood analysis."""
+        from backend.app.core.config import settings
+        api_key = settings.GEMINI_API_KEY or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            return None
+
+        try:
+            import json
+            import re
+            import google.generativeai as genai
+
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel(settings.GEMINI_MODEL or "gemini-1.5-flash")
+
+            prompt = (
+                "You are an expert hydrological disaster intelligence AI for Bengaluru, India (BBMP & BTP). "
+                "Analyze this urban street/road photograph for signs of waterlogging, inundation, or flooding. "
+                "Output strictly a JSON object with these keys:\n"
+                "{\n"
+                '  "flood_detected": true or false,\n'
+                '  "confidence": 0.0 to 1.0,\n'
+                '  "estimated_water_depth": "e.g. 1.5 - 2.0 ft (wheel-hub height)",\n'
+                '  "water_turbidity": "silty_runoff" or "standing_rainwater" or "dry",\n'
+                '  "submerged_objects": ["list of visible submerged elements (e.g. road curb, car tires)"],\n'
+                '  "traffic_passability": "impassable for light vehicles" or "passable with caution" or "normal",\n'
+                '  "hazard_level": "severe" or "moderate" or "low",\n'
+                '  "situation_summary": "2 concise sentences on visual road condition",\n'
+                '  "key_observations": ["bullet 1", "bullet 2"]\n'
+                "}\n"
+                "Return ONLY the raw JSON. No markdown fences, no conversational text."
+            )
+
+            # Resize if very large for faster token latency
+            img_to_send = img.copy()
+            if img_to_send.width > 1024 or img_to_send.height > 1024:
+                img_to_send.thumbnail((1024, 1024))
+
+            response = model.generate_content([prompt, img_to_send])
+            text = response.text.strip()
+            # Clean markdown code block if present
+            text = re.sub(r"^```(?:json)?", "", text).rstrip("`").strip()
+            return json.loads(text)
+        except Exception as e:
+            return {"error": str(e)}
+
     def run(self, image_path: str | Path) -> dict[str, any]:
         t0 = time.perf_counter()
         p = Path(image_path)
@@ -102,8 +148,26 @@ class VisionAgent:
                 quality, quality_issues = self.assess_image_quality(img)
                 water_analysis = self.analyze_water_features(img)
                 
-                # Check if transformer model is loaded
-                if self.pipeline:
+                # 1. Try Google Gemini Multimodal Vision if API Key configured
+                gemini_data = self.analyze_with_gemini(img)
+                if gemini_data and "error" not in gemini_data:
+                    is_flood = bool(gemini_data.get("flood_detected", water_analysis["water_detected"]))
+                    flood_class = "flood" if is_flood else "non_flood"
+                    confidence = float(gemini_data.get("confidence", 0.94))
+                    
+                    evidence = []
+                    if gemini_data.get("situation_summary"):
+                        evidence.append(f"Gemini Multimodal: {gemini_data['situation_summary']}")
+                    if gemini_data.get("estimated_water_depth"):
+                        evidence.append(f"Depth Estimate: {gemini_data['estimated_water_depth']}")
+                    if gemini_data.get("traffic_passability"):
+                        evidence.append(f"Passability: {gemini_data['traffic_passability']}")
+                    if gemini_data.get("submerged_objects"):
+                        evidence.append(f"Submerged Assets: {', '.join(gemini_data['submerged_objects'])}")
+                    
+                    evidence.extend(water_analysis["evidence"])
+                # 2. Check if local transformer pipeline is loaded
+                elif self.pipeline:
                     try:
                         preds = self.pipeline(str(p), top_k=3)
                         top_label = preds[0]["label"].lower()
@@ -118,6 +182,7 @@ class VisionAgent:
                         flood_class = "flood" if water_analysis["water_detected"] else "non_flood"
                         confidence = 0.82 if flood_class == "flood" else 0.75
                         evidence = water_analysis["evidence"] + [f"Deep learning pipeline fallback: {str(me)}"]
+                # 3. Fallback to calibrated CV heuristic (silt & reflection masks)
                 else:
                     flood_class = "flood" if water_analysis["water_detected"] else "non_flood"
                     confidence = 0.86 if flood_class == "flood" else 0.78

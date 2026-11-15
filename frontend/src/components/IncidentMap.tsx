@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { IncidentSummary, RiskLevel } from '../types';
-import { Layers, Crosshair, Filter, ShieldAlert } from 'lucide-react';
+import { Layers, Crosshair, Filter, ShieldAlert, Sun, Moon, Eye, AlertTriangle } from 'lucide-react';
 
 interface IncidentMapProps {
   incidents: IncidentSummary[];
@@ -23,11 +23,13 @@ const CHRONIC_HOTSPOTS = [
 export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectIncident, selectedId }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const tileLayerRef = useRef<L.TileLayer | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const hotspotsLayerRef = useRef<L.LayerGroup | null>(null);
 
   const [mapRiskFilter, setMapRiskFilter] = useState<'all' | RiskLevel>('all');
   const [showHotspots, setShowHotspots] = useState<boolean>(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
 
   // Initialize Map
   useEffect(() => {
@@ -43,42 +45,77 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
       // Add Zoom Control to Top-Right
       L.control.zoom({ position: 'topright' }).addTo(map);
 
-      // CartoDB Voyager tiles (clean, high contrast, readable street names)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      // Official 100% Free OpenStreetMap tile layer (ZERO API KEY, ZERO WATERMARKS)
+      const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
+        subdomains: ['a', 'b', 'c'],
+        className: 'tactical-dark-tiles',
       }).addTo(map);
 
+      tileLayerRef.current = tiles;
       hotspotsLayerRef.current = L.layerGroup().addTo(map);
       markersLayerRef.current = L.layerGroup().addTo(map);
       mapInstanceRef.current = map;
     }
   }, []);
 
-  // Update Hotspots Layer
+  // Toggle Dark/Light Tile Filter
+  const toggleMapTheme = () => {
+    if (!tileLayerRef.current) return;
+    const nextDark = !isDarkMode;
+    setIsDarkMode(nextDark);
+    
+    const tileContainer = tileLayerRef.current.getContainer();
+    if (tileContainer) {
+      if (nextDark) {
+        tileContainer.classList.add('tactical-dark-tiles');
+        tileContainer.classList.remove('tactical-light-tiles');
+      } else {
+        tileContainer.classList.remove('tactical-dark-tiles');
+        tileContainer.classList.add('tactical-light-tiles');
+      }
+    }
+  };
+
+  // Update Hotspots Layer with non-colliding compact badges
   useEffect(() => {
     if (!hotspotsLayerRef.current) return;
     hotspotsLayerRef.current.clearLayers();
 
     if (showHotspots) {
       CHRONIC_HOTSPOTS.forEach(spot => {
+        // Sleek compact diamond marker with tooltip on hover
         const spotIcon = L.divIcon({
           className: 'custom-hotspot-pin',
           html: `
-            <div class="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-slate-900/95 text-[10px] font-black text-amber-300 border border-amber-400/80 shadow-xl whitespace-nowrap scale-95 hover:scale-105 transition-transform">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-              <span>⚠️ ${spot.name}</span>
+            <div class="group relative flex items-center justify-center cursor-pointer">
+              <div class="w-5 h-5 rounded-md bg-amber-950/90 border border-amber-400 text-amber-300 flex items-center justify-center text-[10px] shadow-lg shadow-amber-500/20 hover:scale-125 transition-all">
+                ⚠️
+              </div>
             </div>
           `,
-          iconSize: [140, 24],
-          iconAnchor: [70, 12],
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
         });
-        L.marker([spot.lat, spot.lon], { icon: spotIcon }).addTo(hotspotsLayerRef.current!);
+
+        const hotspotMarker = L.marker([spot.lat, spot.lon], { icon: spotIcon });
+        
+        hotspotMarker.bindTooltip(
+          `<strong>⚠️ ${spot.name}</strong><br/><span style="color:#f59e0b;">${spot.vuln} Vulnerability · ${spot.ward}</span>`,
+          {
+            direction: 'top',
+            offset: [0, -10],
+            className: 'hotspot-tooltip',
+          }
+        );
+
+        hotspotsLayerRef.current?.addLayer(hotspotMarker);
       });
     }
   }, [showHotspots]);
 
-  // Update Incident Markers
+  // Update Incident Markers with distinct glowing beacons
   useEffect(() => {
     if (!markersLayerRef.current || !mapInstanceRef.current) return;
     markersLayerRef.current.clearLayers();
@@ -96,9 +133,9 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
       const labelSymbol = isHigh ? '!' : isMedium ? 'M' : 'L';
 
       const iconHtml = `
-        <div class="relative flex items-center justify-center cursor-pointer">
-          ${isHigh ? `<span class="absolute w-7 h-7 rounded-full bg-red-500/40 animate-ping"></span>` : ''}
-          <div style="background-color: ${pinColor};" class="w-5 h-5 rounded-full border-2 border-white shadow-2xl flex items-center justify-center text-[10px] font-black text-white transition-transform duration-200 ${isSelected ? 'ring-4 ring-sky-400 scale-125' : 'hover:scale-110'}">
+        <div class="relative flex items-center justify-center cursor-pointer group">
+          ${isHigh ? `<span class="absolute w-8 h-8 rounded-full bg-red-500/50 animate-ping"></span>` : ''}
+          <div style="background-color: ${pinColor};" class="w-6 h-6 rounded-full border-2 border-white shadow-2xl flex items-center justify-center text-[11px] font-black text-white transition-all duration-200 ${isSelected ? 'ring-4 ring-sky-400 scale-125' : 'group-hover:scale-115'}">
             ${labelSymbol}
           </div>
         </div>
@@ -107,28 +144,38 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
       const icon = L.divIcon({
         className: 'incident-marker-custom',
         html: iconHtml,
-        iconSize: [26, 26],
-        iconAnchor: [13, 13],
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
       });
 
       const marker = L.marker([inc.latitude, inc.longitude], { icon });
 
+      // Clean tooltip on hover
+      marker.bindTooltip(
+        `<strong>${inc.ward_name || inc.incident_id}</strong><br/>Risk Score: <strong>${inc.risk_score}/100</strong> (${inc.risk_level.toUpperCase()})`,
+        {
+          direction: 'top',
+          offset: [0, -14],
+          className: 'hotspot-tooltip'
+        }
+      );
+
       // Popup Content with Glassmorphic Card Styling
       const popupContent = document.createElement('div');
-      popupContent.className = 'p-1.5 text-slate-800 text-xs font-sans min-w-[200px]';
+      popupContent.className = 'p-1.5 text-slate-100 text-xs font-sans min-w-[210px]';
       popupContent.innerHTML = `
-        <div class="flex items-center justify-between border-b border-slate-200 pb-1.5 mb-1.5">
-          <span class="font-mono font-bold text-xs text-slate-900">${inc.incident_id}</span>
-          <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase text-white" style="background-color: ${pinColor};">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-1.5">
+          <span class="font-mono font-bold text-xs text-white">${inc.incident_id}</span>
+          <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase text-white shadow-sm" style="background-color: ${pinColor};">
             ${inc.risk_level} (${inc.risk_score})
           </span>
         </div>
-        <div class="text-[11px] text-slate-600 mb-1">
-          Ward: <span class="font-bold text-slate-800">${inc.ward_name || 'Bengaluru Urban'}</span>
+        <div class="text-[11px] text-slate-300 mb-1">
+          Ward: <span class="font-bold text-white">${inc.ward_name || 'Bengaluru Urban'}</span>
         </div>
-        <div class="text-[11px] text-slate-600 mb-2">
-          Status: <span class="font-semibold text-slate-900 uppercase text-[10px]">${inc.status}</span> &bull; 
-          <span class="text-slate-500 font-medium">${inc.reports_count} report(s)</span>
+        <div class="text-[11px] text-slate-400 mb-2">
+          Status: <span class="font-semibold text-white uppercase text-[10px]">${inc.status}</span> &bull; 
+          <span class="text-slate-400 font-medium">${inc.reports_count} report(s)</span>
         </div>
         <button id="btn-inspect-${inc.incident_id}" class="w-full py-1.5 px-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-[11px] font-bold shadow-md transition flex items-center justify-center space-x-1">
           <span>Open Multi-Agent Dossier</span>
@@ -161,7 +208,7 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
       <div ref={mapContainerRef} className="w-full h-full z-0" />
       
       {/* Floating Map Control Toolbar */}
-      <div className="absolute top-4 left-4 z-[1000] flex flex-wrap items-center gap-1.5 bg-slate-950/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="absolute top-4 left-4 z-[1000] flex flex-wrap items-center gap-1.5 bg-slate-950/95 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800 shadow-xl">
         
         {/* Risk Filter Buttons */}
         <button
@@ -206,11 +253,21 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
         <button
           onClick={() => setShowHotspots(!showHotspots)}
           className={`px-2 py-1 rounded-xl text-[10px] font-bold transition flex items-center space-x-1 ${
-            showHotspots ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'text-slate-500 hover:text-slate-400'
+            showHotspots ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-500 hover:text-slate-400'
           }`}
           title="Toggle Chronic Hotspots"
         >
           <span>⚠️ Hotspots</span>
+        </button>
+
+        {/* Theme Switcher: Dark Tactical vs Daylight Street */}
+        <button
+          onClick={toggleMapTheme}
+          className="p-1 px-2 rounded-xl text-[10px] font-bold text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 transition flex items-center space-x-1 border border-slate-800"
+          title="Toggle Map Style (Dark Tactical / Street View)"
+        >
+          {isDarkMode ? <Sun className="w-3 h-3 text-amber-400" /> : <Moon className="w-3 h-3 text-sky-400" />}
+          <span className="hidden sm:inline">{isDarkMode ? 'Light' : 'Dark'}</span>
         </button>
 
         {/* Recenter Button */}
@@ -225,7 +282,7 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
       </div>
 
       {/* Map Legend Overlay */}
-      <div className="absolute bottom-4 left-4 z-[1000] bg-slate-950/90 backdrop-blur-md p-3 rounded-2xl border border-slate-800 text-xs shadow-2xl space-y-1.5 max-w-[210px]">
+      <div className="absolute bottom-4 left-4 z-[1000] bg-slate-950/95 backdrop-blur-md p-3 rounded-2xl border border-slate-800 text-xs shadow-2xl space-y-1.5 max-w-[210px]">
         <div className="font-extrabold text-slate-200 text-[10px] uppercase tracking-wider mb-1 flex items-center space-x-1">
           <Layers className="w-3 h-3 text-sky-400" />
           <span>Risk Severity Legend</span>
@@ -242,7 +299,7 @@ export const IncidentMap: React.FC<IncidentMapProps> = ({ incidents, onSelectInc
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50"></span>
           <span className="text-slate-300 text-[11px]">Low Risk (&lt; 40 pts)</span>
         </div>
-        <div className="flex items-center space-x-1.5 pt-1.5 border-t border-slate-800/80 text-[10px] text-slate-400 font-medium">
+        <div className="flex items-center space-x-1.5 pt-1.5 border-t border-slate-800/80 text-[10px] text-amber-400 font-medium">
           <span>⚠️</span>
           <span>BBMP Chronic Flood Points</span>
         </div>
